@@ -3,7 +3,7 @@ import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert } from 'reac
 import { useNavigation } from '@react-navigation/native'
 
 
-// import signIn from './api/signIn';
+import checkLogin from '../../api/checkLogin';
 // import global from '../global';
 
 // import saveToken from '../../api/saveToken';
@@ -67,13 +67,22 @@ const SignInScreen = (props) => {
     const navigation = useNavigation();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [checkLoginn] = useState(0);
     const { inputStyle, bigButton, buttonText, container, txtSignUp, row1, titleStyle } = styles;
     const gotoSignUp = () => {
         navigation.navigate('SignUp')
     }
-    const gotoAdmin = () => {
-        //navigation.navigate('User')
-        console.log(username, password)
+    const gotoAdmin = () => {       
+        checkLogin( username, password)
+        .then(res => {
+            if (res.success > 0) {
+                Alert.alert("Thông báo!","Bạn đã đăng nhập thành công!");
+                navigation.navigate('Admin')
+            }
+            else{
+                Alert.alert("Thông báo!","Bạn đã đăng nhập không thành công!");
+            }
+        })
     }
     return (
         <View style={container}>

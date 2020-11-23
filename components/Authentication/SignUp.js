@@ -89,40 +89,34 @@ const SignUpScreen = (props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const { inputStyle, bigButton, buttonText, row1, titleStyle, container } = styles;
-    const gotoSignIn = () => {
-        navigation.navigate('SignIn')
-    }
+    
     const onSuccess = () => {
         Alert.alert(
-            'Sign up successfully',
+            "Xác nhận",
+            'Đăng kí thành công',
             [
-                { text: 'OK', onPress: () => gotoSignIn() }
+                { text: "OK", onPress: () => navigation.navigate('SignIn')}
             ],
             { cancelable: false }
         );
     }
     const onFail = () => {
         Alert.alert(
-            'Notice',
-            'Username has been used by other',
+            'Chú ý',
+            'Tên người dùng đã được sử dụng',
             [
-                { text: 'OK', onPress: () => removeUsername() }
+                { text: 'OK', onPress: () => setUsername({ username: '' }) }
             ],
             { cancelable: false }
         );
     }
-    const removeUsername = () => {
-        setUsername({ username: '' });
-    }
     const handlingSignup = () => {
         register( username, password)
         .then(res => {
-            if (res.success == '1') return onSuccess();
+            if (res.success == 1) return onSuccess();
             else 
                 onFail();
         });
-        Alert.alert("Đăng nhập thành công!")
-        navigation.navigate('SignIn')
     }
     return (
         <View style={container}>

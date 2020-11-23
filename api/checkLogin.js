@@ -1,12 +1,12 @@
-const checkLogin = (token) => (
-    fetch('http://10.0.0.13/api/check_login.php',
+const checkLogin = (username,  password) => (
+    fetch("http://192.168.0.5:5000/login",
     {   
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json'
         },
-        body: JSON.stringify({ token })
+        body: JSON.stringify({ username, password })
     })
     .then(res => res.json())
 );

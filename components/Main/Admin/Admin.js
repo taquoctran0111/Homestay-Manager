@@ -1,292 +1,83 @@
 import React, {useState, Component} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native'
 
-
-export default class Admin extends Component{
-  constructor(props){
-    super(props);
+const Room = (props) => {
+  const [background, setBackground] = useState('dodgerblue'); 
+  const navigation = useNavigation();
+  const datasendtoDetail = {
+    PRnameRoom: props.name
   }
-  state = {
-    toggle: true
+  const _onPress = (background) => {
+    navigation.navigate('AdminDetail', datasendtoDetail)    
+    setBackground(background)
   }
-  _onPress(){
-    const newState = !this.state.toggle
-    this.setState({toggle: newState})
-    this.props.navigation.navigate('AdminDetail')
+  const bg = {
+      backgroundColor: background, padding: 10, width: 50, height: 40, alignItems: "center", borderRadius: 5, marginRight: 10, marginTop: 5
   }
-  render(){
-    let {toggle} = this.state;
-    let bgcolor = toggle?"dodgerblue":"red";
-    return(
-      <View style = {styles.content} >
-      <Text style = {styles.title} > Quản lý phòng</Text>
-      <View style = {styles.floor} >
-          <View>
-            <TouchableOpacity onPress = {() => this._onPress()} style={styles.room} > 
-              <Text style={styles.name}>101</Text>
-            </TouchableOpacity>
-          </View>
-          <View>
-            <TouchableOpacity onPress={() => this._onPress()} style={{backgroundColor: bgcolor, padding: 10, width: 50, height: 40, alignItems: "center", borderRadius: 5, marginRight: 10, marginTop: 5,}} >
-              <Text style={styles.name}>102</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.nameRoom}>
-            <TouchableOpacity onPress={() => this._onPress()}>
-              <Text style={styles.name}>103</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.nameRoom}>
-            <TouchableOpacity onPress={() => this._onPress()}>
-              <Text style={styles.name}>104</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.nameRoom}>
-            <TouchableOpacity onPress={() => this._onPress()}>
-              <Text style={styles.name}>105</Text>
-            </TouchableOpacity>
-          </View>
-      </View>
-      <View style = {styles.floor} >
-          <View style={styles.nameRoom}>
-            <TouchableOpacity onPress={() => this._onPress()}>
-              <Text style={styles.name}>201</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.nameRoom}>
-            <TouchableOpacity onPress={() => this._onPress()}>
-              <Text style={styles.name}>202</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.nameRoom}>
-            <TouchableOpacity onPress={() => this._onPress()}>
-              <Text style={styles.name}>203</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.nameRoom}>
-            <TouchableOpacity onPress={() => this._onPress()}>
-              <Text style={styles.name}>204</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.nameRoom}>
-            <TouchableOpacity onPress={() => this._onPress()}>
-              <Text style={styles.name}>205</Text>
-            </TouchableOpacity>
-          </View>
-      </View>
-      <View style = {styles.floor} >
-          <View style={styles.nameRoom}>
-            <TouchableOpacity onPress={() => this._onPress()}>
-              <Text style={styles.name}>301</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.nameRoom}>
-            <TouchableOpacity onPress={() => this._onPress()}>
-              <Text style={styles.name}>302</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.nameRoom}>
-            <TouchableOpacity onPress={() => this._onPress()}>
-              <Text style={styles.name}>303</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.nameRoom}>
-            <TouchableOpacity onPress={() => this._onPress()}>
-              <Text style={styles.name}>304</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.nameRoom}>
-            <TouchableOpacity onPress={() => this._onPress()}>
-              <Text style={styles.name}>305</Text>
-            </TouchableOpacity>
-          </View>
-      </View>
-      <View style = {styles.floor} >
-          <View style={styles.nameRoom}>
-            <TouchableOpacity onPress={() => this._onPress()}>
-              <Text style={styles.name}>401</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.nameRoom}>
-            <TouchableOpacity onPress={() => this._onPress()}>
-              <Text style={styles.name}>402</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.nameRoom}>
-            <TouchableOpacity onPress={() => this._onPress()}>
-              <Text style={styles.name}>403</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.nameRoom}>
-            <TouchableOpacity onPress={() => this._onPress()}>
-              <Text style={styles.name}>404</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.nameRoom}>
-            <TouchableOpacity onPress={() => this._onPress()}>
-              <Text style={styles.name}>405</Text>
-            </TouchableOpacity>
-          </View>
-      </View>
-      <View style = {{marginTop: 50,}}>
-        <View style={styles.note}>
-            <View style={styles.nameRoom}>
-              <TouchableOpacity>
-                <Text style={styles.name}></Text>
-              </TouchableOpacity>
-            </View>
-            <Text style={styles.txtNote}>Chưa có người đặt</Text>
-        </View>
-        <View style={styles.note}>
-            <View style={styles.bookedRoom}>
-              <TouchableOpacity>
-                <Text style={styles.name}></Text>
-              </TouchableOpacity>
-            </View>
-            <Text style={styles.txtNote}>Đã có người đặt</Text>
-        </View>
-      </View>
+  const name = { color: "white",}
+  return(
+    <View>
+      <TouchableOpacity style={bg} onPress = {() => { _onPress('red')}}>
+        <Text style={name}>{props.name}</Text>
+      </TouchableOpacity>
     </View>
-    );
-  }
+  );
 }
-
-// function User({navigation}) {
-//   click = () => {
-//     navigation.navigate('UserDetail')
-//   }
-//   return (
-//     <View style = {styles.content} >
-//       <Text style = {styles.title} >Danh sách phòng</Text>
-//       <View style = {styles.floor} >
-//           <View style={styles.nameRoom}>
-//             <TouchableOpacity onPress={() => this._onPress()}>
-//               <Text style={styles.name}>101</Text>
-//             </TouchableOpacity>
-//           </View>
-//           <View style={styles.nameRoom}>
-//             <TouchableOpacity onPress={() => this._onPress()}>
-//               <Text style={styles.name}>102</Text>
-//             </TouchableOpacity>
-//           </View>
-//           <View style={styles.nameRoom}>
-//             <TouchableOpacity onPress={() => this._onPress()}>
-//               <Text style={styles.name}>103</Text>
-//             </TouchableOpacity>
-//           </View>
-//           <View style={styles.nameRoom}>
-//             <TouchableOpacity onPress={() => this._onPress()}>
-//               <Text style={styles.name}>104</Text>
-//             </TouchableOpacity>
-//           </View>
-//           <View style={styles.nameRoom}>
-//             <TouchableOpacity onPress={() => this._onPress()}>
-//               <Text style={styles.name}>105</Text>
-//             </TouchableOpacity>
-//           </View>
-//       </View>
-//       <View style = {styles.floor} >
-//           <View style={styles.nameRoom}>
-//             <TouchableOpacity onPress={() => this._onPress()}>
-//               <Text style={styles.name}>201</Text>
-//             </TouchableOpacity>
-//           </View>
-//           <View style={styles.nameRoom}>
-//             <TouchableOpacity onPress={() => this._onPress()}>
-//               <Text style={styles.name}>202</Text>
-//             </TouchableOpacity>
-//           </View>
-//           <View style={styles.nameRoom}>
-//             <TouchableOpacity onPress={() => this._onPress()}>
-//               <Text style={styles.name}>203</Text>
-//             </TouchableOpacity>
-//           </View>
-//           <View style={styles.nameRoom}>
-//             <TouchableOpacity onPress={() => this._onPress()}>
-//               <Text style={styles.name}>204</Text>
-//             </TouchableOpacity>
-//           </View>
-//           <View style={styles.nameRoom}>
-//             <TouchableOpacity onPress={() => this._onPress()}>
-//               <Text style={styles.name}>205</Text>
-//             </TouchableOpacity>
-//           </View>
-//       </View>
-//       <View style = {styles.floor} >
-//           <View style={styles.nameRoom}>
-//             <TouchableOpacity onPress={() => this._onPress()}>
-//               <Text style={styles.name}>301</Text>
-//             </TouchableOpacity>
-//           </View>
-//           <View style={styles.nameRoom}>
-//             <TouchableOpacity onPress={() => this._onPress()}>
-//               <Text style={styles.name}>302</Text>
-//             </TouchableOpacity>
-//           </View>
-//           <View style={styles.nameRoom}>
-//             <TouchableOpacity onPress={() => this._onPress()}>
-//               <Text style={styles.name}>303</Text>
-//             </TouchableOpacity>
-//           </View>
-//           <View style={styles.nameRoom}>
-//             <TouchableOpacity onPress={() => this._onPress()}>
-//               <Text style={styles.name}>304</Text>
-//             </TouchableOpacity>
-//           </View>
-//           <View style={styles.nameRoom}>
-//             <TouchableOpacity onPress={() => this._onPress()}>
-//               <Text style={styles.name}>305</Text>
-//             </TouchableOpacity>
-//           </View>
-//       </View>
-//       <View style = {styles.floor} >
-//           <View style={styles.nameRoom}>
-//             <TouchableOpacity onPress={() => this._onPress()}>
-//               <Text style={styles.name}>401</Text>
-//             </TouchableOpacity>
-//           </View>
-//           <View style={styles.nameRoom}>
-//             <TouchableOpacity onPress={() => this._onPress()}>
-//               <Text style={styles.name}>402</Text>
-//             </TouchableOpacity>
-//           </View>
-//           <View style={styles.nameRoom}>
-//             <TouchableOpacity onPress={() => this._onPress()}>
-//               <Text style={styles.name}>403</Text>
-//             </TouchableOpacity>
-//           </View>
-//           <View style={styles.nameRoom}>
-//             <TouchableOpacity onPress={() => this._onPress()}>
-//               <Text style={styles.name}>404</Text>
-//             </TouchableOpacity>
-//           </View>
-//           <View style={styles.nameRoom}>
-//             <TouchableOpacity onPress={() => this._onPress()}>
-//               <Text style={styles.name}>405</Text>
-//             </TouchableOpacity>
-//           </View>
-//       </View>
-//       <View style = {{marginTop: 50,}}>
-//         <View style={styles.note}>
-//             <View style={styles.nameRoom}>
-//               <TouchableOpacity>
-//                 <Text style={styles.name}></Text>
-//               </TouchableOpacity>
-//             </View>
-//             <Text style={styles.txtNote}>Chưa có người đặt</Text>
-//         </View>
-//         <View style={styles.note}>
-//             <View style={styles.bookedRoom}>
-//               <TouchableOpacity>
-//                 <Text style={styles.name}></Text>
-//               </TouchableOpacity>
-//             </View>
-//             <Text style={styles.txtNote}>Đã có người đặt</Text>
-//         </View>
-//       </View>
-//     </View>
-//   );
-// }
+const Admin = () => {
+  const {content, title, floor, room, name, note, txtNote, bookedRoom} = styles; 
+  return(
+    <View style = {content} >
+       <Text style = {title} >Danh sách phòng</Text>
+       <View style = {floor} >
+           <Room name = "101"/>
+           <Room name = "102"/>
+           <Room name = "103"/>
+           <Room name = "104"/>
+           <Room name = "105"/>
+       </View>
+       <View style = {floor} >
+           <Room name = "201"/>
+           <Room name = "202"/>
+           <Room name = "203"/>
+           <Room name = "204"/>
+           <Room name = "205"/>
+       </View>
+       <View style = {floor} >
+           <Room name = "301"/>
+           <Room name = "302"/>
+           <Room name = "303"/>
+           <Room name = "304"/>
+           <Room name = "305"/>
+       </View>
+       <View style = {floor} >
+           <Room name = "401"/>
+           <Room name = "402"/>
+           <Room name = "403"/>
+           <Room name = "404"/>
+           <Room name = "405"/>
+       </View>
+       <View style = {{marginTop: 50,}}>
+         <View style={note}>
+             <View>
+               <TouchableOpacity style={room}>
+                 <Text style={name}></Text>
+               </TouchableOpacity>
+             </View>
+             <Text style={txtNote}>Chưa có người đặt</Text>
+         </View>
+         <View style={note}>
+             <View style={bookedRoom}>
+               <TouchableOpacity>
+                 <Text style={name}></Text>
+               </TouchableOpacity>
+             </View>
+             <Text style={txtNote}>Đã có người đặt</Text>
+         </View>
+       </View>
+     </View>
+  );
+}
 const styles = StyleSheet.create({
   content: {
     flex: 1,
@@ -303,6 +94,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginBottom: 30,
   },
+  name: {
+    color: "white",
+  },
   note: {
     flexDirection: "row",
     marginLeft: 20,
@@ -312,18 +106,8 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginLeft: 10,
   },
-  nameRoom: {
-    backgroundColor: "dodgerblue",
-    padding: 10,
-    width: 50,
-    height: 40,
-    alignItems: "center",
-    borderRadius: 5,
-    marginRight: 10,
-    marginTop: 5,
-  },
   room: {
-    backgroundColor: "dodgerblue",
+    backgroundColor: 'dodgerblue',
     padding: 10,
     width: 50,
     height: 40,
@@ -331,9 +115,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginRight: 10,
     marginTop: 5,
-  },
-  name: {
-    color: "white",
   },
   bookedRoom:{
     backgroundColor: "red",
@@ -345,6 +126,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
     marginTop: 5,
   },
+  
 });
 
-// export default User;
+export default Admin;

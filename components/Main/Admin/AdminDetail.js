@@ -2,14 +2,15 @@ import React from 'react';
 import {  View,  Text, Button, TextInput, StyleSheet, } from 'react-native';
 
 
-function Login() {
+function Login({route, navigation}) {
   const [value1, txtName] = React.useState('');
   const [value2, txtSDT] = React.useState('');
   const [value3, txtTime] = React.useState('');
   const [value4, txttotal] = React.useState('');
+  const {PRnameRoom} = route.params;
   return (
     <View style={styles.content}>
-      <Text style={styles.title}>Phòng 103</Text>
+      <Text style={styles.title}>Phòng {PRnameRoom}</Text>
       <Text style={styles.title1}>Đã được đặt</Text>
       <View style={styles.abc}>
           <Text style={styles.titleInput}> Tên người thuê </Text>
