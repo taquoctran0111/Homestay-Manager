@@ -1,39 +1,33 @@
-let express = require('express')
-let morgan = require('morgan')
-let bodyParser = require('body-parser')
-let expressValidator = require('express-validator')
-let session = require('express-session');
-let MySQLStore = require('express-mysql-session')(session);
+const express = require("express");
+const morgan = require("morgan");
+const bodyParser = require("body-parser");
+const expressValidator = require("express-validator");
+const session = require("express-session");
+const http = require("http");
 
-let app = express()
-let PORT = 8797
+const app = express();
+let server = http.createServer(app);
 
-let options = {
-  host: "localhost",
-  port: "3306",
-  user: "root",
-  password: "123456",
-  database: "homestaymanager"
-};
+app.use(bodyParser.json());
+app.use(morgan("dev"));
+app.use(expressValidator());
 
-let sessionStore = new MySQLStore(options);
+app.set("ip", process.env.IP || "localhost");
+app.set("port", process.env.PORT || 8797);
 
-app.use(session({
-  key: 'session_cookie_name',
-  secret: 'session_cookie_secret',
-  store: sessionStore,
-  resave: true,
-  saveUninitialized: false
-}));
+server.listen(app.get("port"), app.get("ip"), () => {
+	console.log("Server listening at %s:%d ", app.get("ip"), app.get("port"));
+});
 
-app.use(morgan("dev"))
-app.use(bodyParser.json())
-app.use(expressValidator())
+app.get("/", (req, res) => {
+	res.send("GET");
+});
 
-app.use("/", require("./models/src/users/userControllers.js"));
+app.post("/", (req, res) => {
+	res.send("POST");
+});
 
-app.listen(PORT, () => {
-  console.log("Server started on http://localhost:" + PORT);
-})
+const controller = require("./models/src/users/userControllers.js");
+controller(app);
 
-module.exports = app;  
+module.exports = app;
