@@ -1,29 +1,39 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const app = express();
-const db = require("./app/models/db");
-const jsonParser = bodyParser.json()
+let express = require('express')
+let morgan = require('morgan')
+let bodyParser = require('body-parser')
+let expressValidator = require('express-validator')
+let session = require('express-session');
+let MySQLStore = require('express-mysql-session')(session);
 
-app.use(bodyParser.json({type: "application/json"} ));
-app.use(bodyParser.urlencoded({ extended: true }));
+let app = express()
+let PORT = 8797
 
-require("./app/routes/ro.admin.js")(app);
-require("./app/routes/ro.user.js")(app);
-require("./app/routes/ro.customer.js")(app);
-require("./app/routes/ro.signup.js")(app);
+let options = {
+  host: "localhost",
+  port: "3306",
+  user: "root",
+  password: "123456",
+  database: "homestaymanager"
+};
 
+let sessionStore = new MySQLStore(options);
 
-app.post('/login', jsonParser, function (req, res) {
-    const username = req.body.username; //lấy dữ liệu bên react-native gửi qua
-    const password = req.body.password;
-    if(username=='admin' && password=='admin'){
-    	res.json({"success":1,"username":username,"password":password});
-    }
-    res.json({"success":0,"username":username,"password":password});
+app.use(session({
+  key: 'session_cookie_name',
+  secret: 'session_cookie_secret',
+  store: sessionStore,
+  resave: true,
+  saveUninitialized: false
+}));
+
+app.use(morgan("dev"))
+app.use(bodyParser.json())
+app.use(expressValidator())
+
+app.use("/", require("./models/src/users/userControllers.js"));
+
+app.listen(PORT, () => {
+  console.log("Server started on http://localhost:" + PORT);
 })
-    
 
-
-app.listen( 5000, () => {
-    console.log("Server start on port 5000");
-})
+module.exports = app;  
