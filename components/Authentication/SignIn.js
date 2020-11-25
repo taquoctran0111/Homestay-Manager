@@ -65,7 +65,7 @@ import checkLogin from '../../api/checkLogin';
 // }
 const SignInScreen = (props) => {
     const navigation = useNavigation();
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [checkLoginn] = useState(0);
     const { inputStyle, bigButton, buttonText, container, txtSignUp, row1, titleStyle } = styles;
@@ -91,9 +91,9 @@ const SignInScreen = (props) => {
             </View>
             <TextInput
                 style={inputStyle}
-                placeholder="Tên tài khoản"
-                value={username}
-                onChangeText={(text) => setUsername(text)}
+                placeholder="Email"
+                value={email}
+                onChangeText={(text) => setEmail(text)}
             />
             <TextInput
                 style={inputStyle}

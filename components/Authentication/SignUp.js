@@ -88,35 +88,52 @@ const SignUpScreen = (props) => {
     const navigation = useNavigation();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [password_confirmation, setpassword_confirmation] = useState('');
+
+
     const { inputStyle, bigButton, buttonText, row1, titleStyle, container } = styles;
     
-    const onSuccess = () => {
-        Alert.alert(
-            "Xác nhận",
-            'Đăng kí thành công',
-            [
-                { text: "OK", onPress: () => navigation.navigate('SignIn')}
-            ],
-            { cancelable: false }
-        );
-    }
-    const onFail = () => {
-        Alert.alert(
-            'Chú ý',
-            'Tên người dùng đã được sử dụng',
-            [
-                { text: 'OK', onPress: () => setUsername({ username: '' }) }
-            ],
-            { cancelable: false }
-        );
-    }
+    // const onSuccess = () => {
+    //     Alert.alert(
+    //         "Xác nhận",
+    //         'Đăng kí thành công',
+    //         [
+    //             { text: "OK", onPress: () => navigation.navigate('SignIn')}
+    //         ],
+    //         { cancelable: false }
+    //     );
+    // }
+    // const onFail = () => {
+    //     Alert.alert(
+    //         'Chú ý',
+    //         'Email đã được sử dụng',
+    //         [
+    //             { text: 'OK', onPress: () => setEmail({ email: '' }) }
+    //         ],
+    //         { cancelable: false }
+    //     );
+    // }
     const handlingSignup = () => {
-        register( username, password)
+        register( username, password, email, password_confirmation)
+        
         .then(res => {
-            if (res.success == 1) return onSuccess();
-            else 
-                onFail();
-        });
+            console.log(res.success);
+            console.log(res.validator);
+            if (res.success == 1){
+                Alert.alert("Đăng ký thành công!");
+                navigation.navigate("SignIn");
+            }
+            else if (res.success == 2){
+                // console.log(res.validator)
+                let notice = res.validator;
+                Alert.alert(notice)
+            }
+            else{
+                Alert.alert("Email đã được sử dụng!")
+                setEmail({ email: '' });
+            }
+        });  
     }
     return (
         <View style={container}>
@@ -125,9 +142,15 @@ const SignUpScreen = (props) => {
             </View>
             <TextInput 
                 style={inputStyle} 
-                placeholder="Tên tài khoản" 
+                placeholder="Tên người dùng" 
                 value={username}
                 onChangeText={(text) => setUsername(text)}
+            />
+            <TextInput 
+                style={inputStyle} 
+                placeholder="Email" 
+                value={email}
+                onChangeText={(text) => setEmail(text)}
             />
             <TextInput 
                 style={inputStyle} 
@@ -136,13 +159,13 @@ const SignUpScreen = (props) => {
                 secureTextEntry
                 onChangeText={(text) => setPassword(text)}
             />
-            {/* <TextInput 
+            <TextInput 
                 style={inputStyle} 
                 placeholder="Nhập lại mật khẩu" 
-                value={this.state.rePassword}
+                value={password_confirmation}
                 secureTextEntry
-                onChangeText={text => this.setState({ rePassword: text })}
-            /> */}
+                onChangeText={(text) => setpassword_confirmation(text)}
+            />
             <TouchableOpacity style={bigButton} onPress={() => handlingSignup()}>
                 <Text style={buttonText}>ĐĂNG KÝ</Text>
             </TouchableOpacity>
