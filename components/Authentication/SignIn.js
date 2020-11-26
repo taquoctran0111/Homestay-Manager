@@ -65,7 +65,7 @@ import checkLogin from '../../api/checkLogin';
 // }
 const SignInScreen = (props) => {
     const navigation = useNavigation();
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [checkLoginn] = useState(0);
     const { inputStyle, bigButton, buttonText, container, txtSignUp, row1, titleStyle } = styles;
@@ -73,7 +73,7 @@ const SignInScreen = (props) => {
         navigation.navigate('SignUp')
     }
     const gotoAdmin = () => {       
-        fetch("http://192.168.0.5:5000/login",
+        fetch("http://192.168.0.5:8797/login",
         {   
             method: 'POST',
             headers: {
@@ -81,18 +81,20 @@ const SignInScreen = (props) => {
                 Accept: 'application/json'
             },
             body: JSON.stringify({ 
-                username: username, 
+                email: email, 
                 password: password 
             })
         })
         .then(res => res.json())
         .then(res => {
-            if (res.success > 0) {
-                Alert.alert("Thông báo!","Bạn đã đăng nhập thành công!");
-                navigation.navigate('Admin')
+            if (res.success == 2){
+                navigation.navigate("Admin");     
+            }
+            else if (res.success == 1){
+                Alert.alert(res.message)
             }
             else{
-                Alert.alert("Thông báo!","Bạn đã đăng nhập không thành công!");
+                Alert.alert(res.message)
             }
         })
     }
@@ -103,9 +105,9 @@ const SignInScreen = (props) => {
             </View>
             <TextInput
                 style={inputStyle}
-                placeholder="Username"
-                value={username}
-                onChangeText={(text) => setUsername(text)}
+                placeholder="Email"
+                value={email}
+                onChangeText={(text) => setEmail(text)}
             />
             <TextInput
                 style={inputStyle}
