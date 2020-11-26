@@ -126,6 +126,10 @@ const SignUpScreen = (props) => {
         fetch("http://192.168.0.5:8797/users",
         {   
             method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
             body: JSON.stringify(data)
         })
         .then(res => res.json())
@@ -135,8 +139,7 @@ const SignUpScreen = (props) => {
                 navigation.navigate("SignIn");     
             }
             else if (res.success == 2){
-                let notice = res.validator;
-                Alert.alert(notice)
+                Alert.alert(res.message)
             }
             else{
                 Alert.alert("Email đã được sử dụng!")
