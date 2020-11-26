@@ -1,28 +1,15 @@
 const register = (username, email, password, password_confirmation) => {
-    console.log(username); 
-    console.log(email);
-    console.log(password);
-    console.log(password_confirmation);
-    let url =  "http://192.168.0.5:8797/users";
-
-    let data = {
-            "username" : username,
-            "email" : email,
-            "password": password,
-            "password_confirmation": password_confirmation
-    }
-    fetch(url,
+    fetch("http://192.168.0.5:8797/users",
     {   
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: data
+        body: ({
+            'username': username ,
+            'password':password ,
+            'email': email ,
+            'password_confirmation': password_confirmation 
+        })
     })
-    .then((res) => {
-        console.log(res);
-    })
+    .then(res => res.json())
 };
 
 module.exports = register;

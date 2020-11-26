@@ -1,6 +1,7 @@
 import React, { useState,Component } from 'react';
 import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
+
 import register from '../../api/register';
 
 // export default class SignUp extends Component {
@@ -115,17 +116,25 @@ const SignUpScreen = (props) => {
     //     );
     // }
     const handlingSignup = () => {
-        register( username, password, email, password_confirmation)
-        
+        //console.log({ username, password, email, password_confirmation})
+        let data = {
+            'username': username ,
+            'password':password ,
+            'email': email ,
+            'password_confirmation': password_confirmation
+        }
+        fetch("http://192.168.0.5:8797/users",
+        {   
+            method: 'POST',
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
         .then(res => {
-            console.log(res.success);
-            console.log(res.validator);
             if (res.success == 1){
                 Alert.alert("Đăng ký thành công!");
-                navigation.navigate("SignIn");
+                navigation.navigate("SignIn");     
             }
             else if (res.success == 2){
-                // console.log(res.validator)
                 let notice = res.validator;
                 Alert.alert(notice)
             }
@@ -133,6 +142,9 @@ const SignUpScreen = (props) => {
                 Alert.alert("Email đã được sử dụng!")
                 setEmail({ email: '' });
             }
+        })
+        .catch((error) => {
+            console.error(error);
         });  
     }
     return (

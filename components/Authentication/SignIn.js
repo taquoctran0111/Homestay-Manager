@@ -65,7 +65,7 @@ import checkLogin from '../../api/checkLogin';
 // }
 const SignInScreen = (props) => {
     const navigation = useNavigation();
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [checkLoginn] = useState(0);
     const { inputStyle, bigButton, buttonText, container, txtSignUp, row1, titleStyle } = styles;
@@ -73,7 +73,19 @@ const SignInScreen = (props) => {
         navigation.navigate('SignUp')
     }
     const gotoAdmin = () => {       
-        checkLogin( username, password)
+        fetch("http://192.168.0.5:5000/login",
+        {   
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
+            body: JSON.stringify({ 
+                username: username, 
+                password: password 
+            })
+        })
+        .then(res => res.json())
         .then(res => {
             if (res.success > 0) {
                 Alert.alert("Thông báo!","Bạn đã đăng nhập thành công!");
@@ -91,9 +103,9 @@ const SignInScreen = (props) => {
             </View>
             <TextInput
                 style={inputStyle}
-                placeholder="Email"
-                value={email}
-                onChangeText={(text) => setEmail(text)}
+                placeholder="Username"
+                value={username}
+                onChangeText={(text) => setUsername(text)}
             />
             <TextInput
                 style={inputStyle}
