@@ -2,89 +2,8 @@ import React, { useState,Component } from 'react';
 import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 
-import register from '../../api/register';
+let url = "http://192.168.43.232:8797/users"
 
-// export default class SignUp extends Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             username: '',
-//             password: '',
-//             rePassword: ''
-//         };
-//     }
-
-//     onSuccess() {
-//         Alert.alert(
-//             'Notice',
-//             'Sign up successfully',
-//             [
-//                 { text: 'OK', onPress: this.props.gotoSignIn() }
-//             ],
-//             { cancelable: false }
-//         );
-//     }
-
-//     onFail() {
-//         Alert.alert(
-//             'Notice',
-//             'Email has been used by other',
-//             [
-//                 { text: 'OK', onPress: () => this.removeEmail.bind(this) }
-//             ],
-//             { cancelable: false }
-//         );
-//     }
-
-//     removeEmail() {
-//         this.setState({ email: '' });
-//     }
-
-//     registerUser() {
-//         // const { username, email, password } = this.state;
-//         // register(email, username, password)
-//         // .then(res => {
-//         //     if (res === 'THANH_CONG') return this.onSuccess();
-//         //     this.onFail();
-//         // });
-//         this.props.navigation.navigate('SignIn')
-//         Alert.alert("Đăng kí thành công")
-//     }
-
-//     render() {
-//         const { inputStyle, bigButton, buttonText, row1, titleStyle, container } = styles;
-//         return (
-//             <View style={container}>
-//                 <View style={row1}>
-//                     <Text style={titleStyle}>ĐĂNG NHẬP</Text>
-//                 </View>
-//                 <TextInput 
-//                     style={inputStyle} 
-//                     placeholder="Tên tài khoản" 
-//                     value={this.state.username}
-//                     onChangeText={text => this.setState({ username: text })}
-//                 />
-//                 <TextInput 
-//                     style={inputStyle} 
-//                     placeholder="Mật khẩu" 
-//                     value={this.state.password}
-//                     secureTextEntry
-//                     onChangeText={text => this.setState({ password: text })}
-//                 />
-//                 <TextInput 
-//                     style={inputStyle} 
-//                     placeholder="Nhập lại mật khẩu" 
-//                     value={this.state.rePassword}
-//                     secureTextEntry
-//                     onChangeText={text => this.setState({ rePassword: text })}
-//                 />
-//                 <TouchableOpacity style={bigButton} onPress={this.registerUser.bind(this)}>
-//                     <Text style={buttonText}>ĐĂNG KÝ</Text>
-//                 </TouchableOpacity>
-//             </View>
-//         );
-//     }
-// }
 const SignUpScreen = (props) => {
     const navigation = useNavigation();
     const [username, setUsername] = useState('');
@@ -92,38 +11,15 @@ const SignUpScreen = (props) => {
     const [email, setEmail] = useState('');
     const [password_confirmation, setpassword_confirmation] = useState('');
 
-
     const { inputStyle, bigButton, buttonText, row1, titleStyle, container } = styles;
-    
-    // const onSuccess = () => {
-    //     Alert.alert(
-    //         "Xác nhận",
-    //         'Đăng kí thành công',
-    //         [
-    //             { text: "OK", onPress: () => navigation.navigate('SignIn')}
-    //         ],
-    //         { cancelable: false }
-    //     );
-    // }
-    // const onFail = () => {
-    //     Alert.alert(
-    //         'Chú ý',
-    //         'Email đã được sử dụng',
-    //         [
-    //             { text: 'OK', onPress: () => setEmail({ email: '' }) }
-    //         ],
-    //         { cancelable: false }
-    //     );
-    // }
     const handlingSignup = () => {
-        //console.log({ username, password, email, password_confirmation})
         let data = {
             'username': username ,
             'password':password ,
             'email': email ,
             'password_confirmation': password_confirmation
         }
-        fetch("http://192.168.0.5:8797/users",
+        fetch(url,
         {   
             method: 'POST',
             headers: {

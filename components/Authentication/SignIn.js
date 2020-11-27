@@ -2,67 +2,9 @@ import React, { useState } from 'react';
 import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 
+//192.168.43.232
+let url = "http://192.168.43.232:8797/login"
 
-import checkLogin from '../../api/checkLogin';
-// import global from '../global';
-
-// import saveToken from '../../api/saveToken';
-
-// export default class Login extends Component {  
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             username: '',
-//             password: ''
-//         };
-//     }
-//     onSignIn() {
-//         const { username, password } = this.state;
-//         signIn(username, password)
-//             .then(res => {
-//                 global.onSignIn(res.user);
-//                 this.props.goBackToMain();
-//                 saveToken(res.token);
-//             })
-//             .catch(err => console.log(err));
-//     }
-//     gotoAdmin(){
-//         this.props.navigation.navigate('User')
-//     }
-//     gotoSignUp(){
-//         this.props.navigation.navigate('SignUp')
-//     }
-//     render() {
-//         const { inputStyle, bigButton, buttonText, container, txtSignUp, row1, titleStyle } = styles;
-//         const { username, password } = this.state;
-//         return (
-//             <View style={container}>
-//                 <View style={row1}>
-//                     <Text style={titleStyle}>ĐĂNG NHẬP</Text>
-//                 </View>
-//                 <TextInput
-//                     style={inputStyle}
-//                     placeholder="Tên tài khoản"
-//                     value={username}
-//                     onChangeText={text => this.setState({ username: text })}
-//                 />
-//                 <TextInput
-//                     style={inputStyle}
-//                     placeholder="Mật khẩu"
-//                     value={password}
-//                     onChangeText={text => this.setState({ password: text })}
-//                     secureTextEntry
-//                 />
-//                 <TouchableOpacity style={bigButton} onPress={() => this.gotoAdmin()}>
-//                     <Text style={buttonText}>ĐĂNG NHẬP</Text>
-//                 </TouchableOpacity>
-//                 <TouchableOpacity  onPress={() => this.gotoSignUp()}>
-//                     <Text style = {txtSignUp}>Đăng ký</Text>
-//                 </TouchableOpacity>
-//             </View>
-//         );
-//     }
-// }
 const SignInScreen = (props) => {
     const navigation = useNavigation();
     const [email, setEmail] = useState('');
@@ -72,8 +14,8 @@ const SignInScreen = (props) => {
     const gotoSignUp = () => {
         navigation.navigate('SignUp')
     }
-    const gotoAdmin = () => {       
-        fetch("http://192.168.0.5:8797/login",
+    const gotoUser = () => {       
+        fetch(url,
         {   
             method: 'POST',
             headers: {
@@ -88,7 +30,10 @@ const SignInScreen = (props) => {
         .then(res => res.json())
         .then(res => {
             if (res.success == 2){
-                navigation.navigate("Admin");     
+                navigation.navigate("User");     
+            }
+            else if(res.role == "admin"){
+                navigation.navigate("Admin")
             }
             else if (res.success == 1){
                 Alert.alert(res.message)
@@ -116,7 +61,7 @@ const SignInScreen = (props) => {
                 onChangeText={(text) => setPassword(text)}
                 secureTextEntry
             />
-            <TouchableOpacity style={bigButton} onPress={() => gotoAdmin()}>
+            <TouchableOpacity style={bigButton} onPress={() => {gotoUser()}}>
                 <Text style={buttonText}>ĐĂNG NHẬP</Text>
             </TouchableOpacity>
             <TouchableOpacity  onPress={() => gotoSignUp()}>

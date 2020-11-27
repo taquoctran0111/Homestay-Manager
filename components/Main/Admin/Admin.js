@@ -28,7 +28,7 @@ const Admin = () => {
   const {content, title, floor, room, name, note, txtNote, bookedRoom} = styles; 
   return(
     <View style = {content} >
-       <Text style = {title} >Danh sách phòng</Text>
+       <Text style = {title} >Quản lý phòng (ADMIN)</Text>
        <View style = {floor} >
            <Room name = "101"/>
            <Room name = "102"/>
