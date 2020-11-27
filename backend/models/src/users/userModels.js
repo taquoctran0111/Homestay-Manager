@@ -26,5 +26,5 @@ let User = sequelize.define("users", {
 });
 
 module.exports = {
-  User,
+  User
 };

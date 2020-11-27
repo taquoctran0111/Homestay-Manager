@@ -40,7 +40,7 @@ let signIn = async (req) => {
       req.session.user = user;
       return true;
     }
-  };
+  }
 };
 
 let isLogging = async (req) => {
@@ -51,8 +51,9 @@ let isLogging = async (req) => {
   }
 }
 
+
 module.exports = {
   register,
   signIn,
-  isLogging
+  isLogging,
 };

@@ -1,12 +1,13 @@
-let express = require('express')
-let morgan = require('morgan')
-let bodyParser = require('body-parser')
-let expressValidator = require('express-validator')
-let session = require('express-session');
-let MySQLStore = require('express-mysql-session')(session);
+const express = require('express')
+const morgan = require('morgan')
+const bodyParser = require('body-parser')
+const expressValidator = require('express-validator')
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
+const jsonParser = bodyParser.json()
 
-let app = express()
-let PORT = 8797
+const app = express()
+const PORT = 8797
 
 let options = {
   host: "localhost",

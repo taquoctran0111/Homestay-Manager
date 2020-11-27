@@ -12,7 +12,6 @@ let {loginValidator} = require("./userValidator");
 router.post("/users", async (req, res, next) => {
   try {
     let validator = await registerValidator(req);
-    console.log(validator)
     if (validator !== null) {
       return res.send({success: "2" , message: validator});
     } else {
@@ -31,19 +30,20 @@ router.post("/users", async (req, res, next) => {
 
 router.post("/login", async (req, res, next) => {
   try {
-    let isLogged = await isLogging(req);
-    if (isLogged === true) {
-      return res.send({message: "You are logged in."});
-    }
     let validator = await loginValidator(req);
     if (validator !== null) {
-      return res.send({message: validator});
+      return res.send({success: "0", message: validator});
     }
+    let checkRole = req.session.user.role;
     let signIned = await signIn(req)
-    if (signIned === false) {
-      return res.send({message: "Email or Password is incorrect"});
-    } else {
-      return res.send({message: "Sign In successfully."});
+    if (signIned === true && checkRole == "admin") {
+      return res.send({role: "admin",  message: "Sign In successfully."});
+    }
+    else if(signIned === true ){
+      return res.send({success: "2",  message: "Sign In successfully."});
+    }
+    else {
+      return res.send({success: "1", message: "Email hoặc mật khẩu không đúng"});
     }
   } catch (error) {
     console.error(error);
