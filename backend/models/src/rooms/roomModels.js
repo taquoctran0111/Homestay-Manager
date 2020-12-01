@@ -2,18 +2,19 @@
 
 let Sequelize = require("sequelize");
 let sequelize = require("../../../config/databaseConn");
-let {Room} = require("../rooms/roomModels");
 
 // table [extension]
-let User = sequelize.define("users", {
-  email: Sequelize.STRING,
-  username: Sequelize.STRING,
-  password: Sequelize.STRING,
-  role: {
-    type: Sequelize.ENUM("admin", "customer"),
+let Room = sequelize.define("rooms", {
+  nameRoom: Sequelize.INTEGER,
+  states: {
+      type: Sequelize.ENUM("unBooked", "Booked"),
   },
+  nameCustomer: Sequelize.STRING,
+  phoneCustomer: Sequelize.INTEGER,
+  timeRental: Sequelize.INTEGER,
+  totalMoney: Sequelize.INTEGER,
 }, {
-  tableName: "users",
+  tableName: "rooms",
   createdAt: "created_at",
   updatedAt: "updated_at",
   indexes: [
@@ -26,11 +27,6 @@ let User = sequelize.define("users", {
   collate: 'utf8_unicode_ci',
 });
 
-User.hasMany(Room, {
-  as: "rooms",
-  foreignKey: "nameCustomer",
-});
-
 module.exports = {
-  User
+  Room,
 };

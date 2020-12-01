@@ -1,16 +1,43 @@
-import React, {useState, Component} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 
+let url = "http://192.168.0.3:8797/rooms/"
+
 const Room = (props) => {
-  const [background, setBackground] = useState('dodgerblue'); 
+  const [background, setBackground] = useState('dodgerblue');
+  const [data, setData] = useState({}) 
   const navigation = useNavigation();
-  const datasendtoDetail = {
-    PRnameRoom: props.name
-  }
-  const _onPress = (background) => {
-    navigation.navigate('AdminDetail', datasendtoDetail)    
-    setBackground(background)
+
+  useEffect((background) => {
+    fetch(url + props.nameRoom.toString())
+    .then((response) => 
+      response.json()
+    )
+    .then((json) => setData(json.result.room))
+    .catch((error) => console.error(error))
+    console.log(props.nameRoom)
+    console.log(data)
+    if(data.states.toString() == "Booked")
+    {
+      background = 'red'; 
+      setBackground(background)
+    }
+  }, []);
+  const _onPress = () => {
+    if(data.states.toString() == "unBooked"){
+      Alert.alert("Phòng chưa được đặt!")
+    }
+    else{
+      navigation.navigate('AdminDetail', {
+        nameRoom: props.nameRoom,
+        nameCustomerPR: data.nameCustomer,
+        phoneCustomerPR: data.phoneCustomer.toString(), 
+        timeRentalPR: data.timeRental.toString(),
+        totalMoneyPR: data.totalMoney.toString(),
+        statesPR: data.states.toString(),
+      }) 
+    }       
   }
   const bg = {
       backgroundColor: background, padding: 10, width: 50, height: 40, alignItems: "center", borderRadius: 5, marginRight: 10, marginTop: 5
@@ -18,8 +45,8 @@ const Room = (props) => {
   const name = { color: "white",}
   return(
     <View>
-      <TouchableOpacity style={bg} onPress = {() => { _onPress('red')}}>
-        <Text style={name}>{props.name}</Text>
+      <TouchableOpacity style={bg} onPress = {() => { _onPress()}}>
+        <Text style={name}>{props.nameRoom}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -30,32 +57,32 @@ const Admin = () => {
     <View style = {content} >
        <Text style = {title} >Quản lý phòng (ADMIN)</Text>
        <View style = {floor} >
-           <Room name = "101"/>
-           <Room name = "102"/>
-           <Room name = "103"/>
-           <Room name = "104"/>
-           <Room name = "105"/>
+           <Room nameRoom = "101"/>
+           <Room nameRoom = "102"/>
+           <Room nameRoom = "103"/>
+           <Room nameRoom = "104"/>
+           <Room nameRoom = "105"/>
        </View>
        <View style = {floor} >
-           <Room name = "201"/>
-           <Room name = "202"/>
-           <Room name = "203"/>
-           <Room name = "204"/>
-           <Room name = "205"/>
+           <Room nameRoom = "201"/>
+           <Room nameRoom = "202"/>
+           <Room nameRoom = "203"/>
+           <Room nameRoom = "204"/>
+           <Room nameRoom = "205"/>
        </View>
        <View style = {floor} >
-           <Room name = "301"/>
-           <Room name = "302"/>
-           <Room name = "303"/>
-           <Room name = "304"/>
-           <Room name = "305"/>
+           <Room nameRoom = "301"/>
+           <Room nameRoom = "302"/>
+           <Room nameRoom = "303"/>
+           <Room nameRoom = "304"/>
+           <Room nameRoom = "305"/>
        </View>
        <View style = {floor} >
-           <Room name = "401"/>
-           <Room name = "402"/>
-           <Room name = "403"/>
-           <Room name = "404"/>
-           <Room name = "405"/>
+           <Room nameRoom = "401"/>
+           <Room nameRoom = "402"/>
+           <Room nameRoom = "403"/>
+           <Room nameRoom = "404"/>
+           <Room nameRoom = "405"/>
        </View>
        <View style = {{marginTop: 50,}}>
          <View style={note}>

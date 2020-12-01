@@ -2,7 +2,7 @@ import React, { useState,Component } from 'react';
 import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 
-let url = "http://192.168.43.232:8797/users"
+let url = "http://192.168.0.3:8797/users"
 
 const SignUpScreen = (props) => {
     const navigation = useNavigation();
@@ -13,12 +13,6 @@ const SignUpScreen = (props) => {
 
     const { inputStyle, bigButton, buttonText, row1, titleStyle, container } = styles;
     const handlingSignup = () => {
-        let data = {
-            'username': username ,
-            'password':password ,
-            'email': email ,
-            'password_confirmation': password_confirmation
-        }
         fetch(url,
         {   
             method: 'POST',
@@ -26,7 +20,12 @@ const SignUpScreen = (props) => {
                 'Content-Type': 'application/json',
                 Accept: 'application/json'
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify({
+                "username": username ,
+                "password": password ,
+                "email": email ,
+                "password_confirmation": password_confirmation
+            })
         })
         .then(res => res.json())
         .then(res => {
@@ -41,10 +40,7 @@ const SignUpScreen = (props) => {
                 Alert.alert("Email đã được sử dụng!")
                 setEmail({ email: '' });
             }
-        })
-        .catch((error) => {
-            console.error(error);
-        });  
+        }) 
     }
     return (
         <View style={container}>

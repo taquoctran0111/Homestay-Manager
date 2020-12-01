@@ -2,47 +2,70 @@ import React, {useState, Component} from 'react';
 import {  View,  Text, Button, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 
 
+let url = 'http://192.168.0.3:8797/update/';
 
 export default function UserDetail({route, navigation}){
-    const [value1, txtName] = React.useState('');
-    const [value2, txtSDT] = React.useState('');
-    const [value3, txtTime] = React.useState('');
-    const [value4, txttotal] = React.useState('');
-    const {PRnameRoom} = route.params;
+    const [nameCustomer, txtName] = React.useState('');
+    const [phoneCustomer, txtSDT] = React.useState('');
+    const [timeRental, txtTime] = React.useState('');
+    const [totalMoney, txttotal] = React.useState('');
+    const {nameRoom} = route.params;
+    const bookRoom = () => {
+      fetch(url + nameRoom.toString(),
+        {   
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
+            body: JSON.stringify({ 
+                'nameCustomer': nameCustomer,
+                'phoneCustomer': phoneCustomer,
+                'timeRental': timeRental,
+            })
+        })
+        .then(res => res.json())
+        .then((res) => {
+          if(res.success == 1){
+            Alert.alert('Đặt phòng thành công!')
+            navigation.navigate('User')
+          }
+        })
+    }
     return (
       <View style={styles.content}>
-        <Text style={styles.title}>Phòng {PRnameRoom}</Text>
+        <Text style={styles.title}>Phòng {nameRoom}</Text>
         <View style={styles.abc}>
             <Text style={styles.titleInput}> Tên người thuê </Text>
             <TextInput style={styles.textInput}          
               onChangeText={text => txtName(text)}
-              value={value1}
+              value={nameCustomer}
             />
         </View>
         <View style={styles.abc}>
             <Text style={styles.titleInput}> Số điện thoại </Text>
             <TextInput style={styles.textInput}          
               onChangeText={text => txtSDT(text)}
-              value={value2}
+              value={phoneCustomer}
             />
         </View>
         <View style={styles.abc}>
             <Text style={styles.titleInput}> Thời gian thuê </Text>
             <TextInput style={styles.textInput}          
               onChangeText={text => txtTime(text)}
-              value={value3}
+              value={timeRental}
             />
         </View>
         <View style={styles.btnCheckout}>
           <TouchableOpacity>
-            <Button title="Đặt phòng"  onPress={() => {Alert.alert("Đặt phòng thành công"), navigation.navigate('User')}}  />
+            <Button title="Đặt phòng"  onPress={() => {bookRoom()}}  />
           </TouchableOpacity>
         </View>
         <View style={styles.abc}>
             <Text style={styles.titleInput}> Tổng tiền </Text>
             <TextInput style={styles.textInput}          
               onChangeText={text => txttotal(text)}
-              value={value4}
+              value={totalMoney}
             />
         </View>
       </View>

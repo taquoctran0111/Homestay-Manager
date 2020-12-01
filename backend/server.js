@@ -32,6 +32,7 @@ app.use(bodyParser.json())
 app.use(expressValidator())
 
 app.use("/", require("./models/src/users/userControllers.js"));
+app.use("/rooms", require("./models/src/rooms/roomControllers.js"))
 
 app.listen(PORT, () => {
   console.log("Server started on http://localhost:" + PORT);

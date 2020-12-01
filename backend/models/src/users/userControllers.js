@@ -30,11 +30,16 @@ router.post("/users", async (req, res, next) => {
 
 router.post("/login", async (req, res, next) => {
   try {
+    // let isLogged = await isLogging(req);
+    // if (isLogged === true) {
+    //   return res.send({message: "You are logged in."});
+    // }
     let validator = await loginValidator(req);
     if (validator !== null) {
       return res.send({success: "0", message: validator});
     }
     let checkRole = req.session.user.role;
+    console.log(checkRole);
     let signIned = await signIn(req)
     if (signIned === true && checkRole == "admin") {
       return res.send({role: "admin",  message: "Sign In successfully."});
