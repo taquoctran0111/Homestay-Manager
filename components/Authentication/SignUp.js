@@ -2,7 +2,7 @@ import React, { useState,Component } from 'react';
 import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 
-let url = "http://192.168.0.3:8797/users"
+let url = "http://192.168.0.4:8797/users"
 
 const SignUpScreen = (props) => {
     const navigation = useNavigation();

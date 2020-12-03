@@ -2,11 +2,12 @@ import React, {useState, useEffect} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 
-let url = "http://192.168.0.3:8797/rooms/"
+let url = "http://192.168.0.4:8797/rooms/"
 
 const Room = (props) => {
   const [background, setBackground] = useState('dodgerblue');
   const [data, setData] = useState({}) 
+  const [isLoading, setLoading] = useState(true);
   const navigation = useNavigation();
 
   useEffect((background) => {
@@ -16,14 +17,13 @@ const Room = (props) => {
     )
     .then((json) => setData(json.result.room))
     .catch((error) => console.error(error))
-    console.log(props.nameRoom)
-    console.log(data)
-    if(data.states.toString() == "Booked")
+    .finally(() => setLoading(false));
+    if(data.states == "Booked")
     {
       background = 'red'; 
       setBackground(background)
     }
-  }, []);
+  }, [isLoading]);
   const _onPress = () => {
     if(data.states.toString() == "unBooked"){
       Alert.alert("Phòng chưa được đặt!")

@@ -1,28 +1,34 @@
 import React, {useState, useEffect} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
+import { ScrollView } from 'react-native-gesture-handler';
 
-let url = "http://192.168.0.3:8797/rooms/"
+const wait = (timeout) => {
+  return new Promise(resolve => {
+    setTimeout(resolve, timeout);
+  });
+}
+
+let url = "http://192.168.0.4:8797/rooms/"
+
 const Room = (props) => {
   const [background, setBackground] = useState('dodgerblue'); 
-  const [data, setData] = useState({}) 
+  const [data, setData] = useState({})
+  const [isLoading, setLoading] = useState(true);
   const navigation = useNavigation();
 
   useEffect((background) => {
     fetch(url + props.nameRoom.toString())
-    .then((response) => 
-      response.json()
-    )
+    .then((response) => response.json())
     .then((json) => setData(json.result.room))
     .catch((error) => console.error(error))
-    console.log(props.nameRoom)
-    console.log(data)
-    if(data.states.toString() == "Booked")
+    .finally(() => setLoading(false));
+    if(data.states == "Booked")
     {
       background = 'red'; 
       setBackground(background)
     }
-  }, []);
+  }, [isLoading]);
   const _onPress = () => {
     if(data.states.toString() == "Booked"){
       Alert.alert("Phòng đã được đặt!")
@@ -44,8 +50,15 @@ const Room = (props) => {
   );
 }
 const User = () => {
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
   const {content, title, floor, room, name, note, txtNote, bookedRoom} = styles; 
   return(
+  <ScrollView  contentContainerStyle={styles.scrollView} refreshControl= {<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>} >
     <View style = {content} >
        <Text style = {title} >Danh sách phòng</Text>
        <View style = {floor} >
@@ -80,7 +93,7 @@ const User = () => {
          <View style={note}>
              <View>
                <TouchableOpacity style={room}>
-                 <Text style={name}></Text>
+                 <Text style={name}></Text> 
                </TouchableOpacity>
              </View>
              <Text style={txtNote}>Chưa có người đặt</Text>
@@ -95,6 +108,7 @@ const User = () => {
          </View>
        </View>
      </View>
+  </ScrollView>
   );
 }
 const styles = StyleSheet.create({
@@ -145,7 +159,12 @@ const styles = StyleSheet.create({
     marginRight: 10,
     marginTop: 5,
   },
-  
+  scrollView: {
+    flex: 1,
+    backgroundColor: '#3EBA77',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
 export default User;

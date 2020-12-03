@@ -2,7 +2,7 @@ import React from 'react';
 import {  View,  Text, Button, TextInput, StyleSheet, } from 'react-native';
 
 
-function Login({route}) {
+function AdminDetail({route}) {
   const {nameRoom, nameCustomerPR, phoneCustomerPR, timeRentalPR, totalMoneyPR, statesPR} = route.params;
   const [nameCustomer, txtName] = React.useState(nameCustomerPR);
   const [phoneCustomer, txtPhone] = React.useState(phoneCustomerPR);
@@ -83,4 +83,4 @@ const styles = StyleSheet.create({
   },
   
 });
-export default Login;
+export default AdminDetail;

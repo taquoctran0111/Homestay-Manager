@@ -1,15 +1,20 @@
-import React, {useState, Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {  View,  Text, Button, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 
 
-let url = 'http://192.168.0.3:8797/update/';
+let url = 'http://192.168.0.4:8797/update/';
 
-export default function UserDetail({route, navigation}){
-    const [nameCustomer, txtName] = React.useState('');
-    const [phoneCustomer, txtSDT] = React.useState('');
-    const [timeRental, txtTime] = React.useState('');
-    const [totalMoney, txttotal] = React.useState('');
+function UserDetail({route, navigation}){
+    const [nameCustomer, txtName] = useState('');
+    const [phoneCustomer, txtSDT] = useState('');
+    const [timeRental, txtTime] = useState('');
+    const [totalMoney, txtTotal] = useState('');
     const {nameRoom} = route.params;
+    let data = {
+      nameCustomer: nameCustomer,
+      phoneCustomer: phoneCustomer,
+      timeRental: timeRental,
+    }
     const bookRoom = () => {
       fetch(url + nameRoom.toString(),
         {   
@@ -18,19 +23,16 @@ export default function UserDetail({route, navigation}){
                 'Content-Type': 'application/json',
                 Accept: 'application/json'
             },
-            body: JSON.stringify({ 
-                'nameCustomer': nameCustomer,
-                'phoneCustomer': phoneCustomer,
-                'timeRental': timeRental,
-            })
+            body: JSON.stringify(data)
         })
         .then(res => res.json())
-        .then((res) => {
-          if(res.success == 1){
+        .then((json) => {
+          if(json.success == 1){
+            txtTotal({totalMoney: json.data.totalMoney})
             Alert.alert('Đặt phòng thành công!')
-            navigation.navigate('User')
           }
         })
+        .catch((err) => console.error(err));
     }
     return (
       <View style={styles.content}>
@@ -64,7 +66,7 @@ export default function UserDetail({route, navigation}){
         <View style={styles.abc}>
             <Text style={styles.titleInput}> Tổng tiền </Text>
             <TextInput style={styles.textInput}          
-              onChangeText={text => txttotal(text)}
+              onChangeText={text => txtTotal(text)}
               value={totalMoney}
             />
         </View>
@@ -117,3 +119,5 @@ const styles = StyleSheet.create({
   },
   
 });
+
+export default UserDetail;

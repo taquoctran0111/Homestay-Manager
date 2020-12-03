@@ -32,7 +32,7 @@ router.put("/update/:nameRoom", async (req, res, next) => {
   
       let result = await updateRoom(nameRoom,statesROOM, nameCUSTOMER, phoneCUSTOMER, timeRENTAL,totalMONEY);
       if (result === null) {
-        return res.status(404).send({message: "Not found Post"});
+        return res.status(404).send({message: "Not found Room"});
       }
       return res.send({
         success: "1",
@@ -40,7 +40,7 @@ router.put("/update/:nameRoom", async (req, res, next) => {
         data: result
       });
     } catch (error) {
-        console.error(error);
+      console.error(error);
       return res.status(500).send({error: "Server Error"});
     }
 });
