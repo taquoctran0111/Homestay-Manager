@@ -1,6 +1,8 @@
 import React from 'react';
-import {  View,  Text, Button, TextInput, StyleSheet, } from 'react-native';
+import {  View,  Text, Button, TextInput, StyleSheet,TouchableOpacity, Alert } from 'react-native';
 
+let url = 'http://192.168.0.5:8797/rooms/reset/';
+// let url = 'http://192.168.43.232:8797/rooms/reset/'
 
 function AdminDetail({route}) {
   const {nameRoom, nameCustomerPR, phoneCustomerPR, timeRentalPR, totalMoneyPR, statesPR} = route.params;
@@ -8,6 +10,29 @@ function AdminDetail({route}) {
   const [phoneCustomer, txtPhone] = React.useState(phoneCustomerPR);
   const [timeRental, txtTime] = React.useState(timeRentalPR);
   const [totalMoney, txtTotal] = React.useState(totalMoneyPR);
+  let data = {
+    nameCustomer: nameCustomer,
+    phoneCustomer: phoneCustomer,
+    timeRental: timeRental,
+  }
+  const unbookRoom = () => {
+    fetch(url + nameRoom.toString(),
+          {   
+              method: 'PUT',
+              headers: {
+                  'Content-Type': 'application/json',
+                  Accept: 'application/json'
+              },
+              body: JSON.stringify(data)
+          })
+          .then(res => res.json())
+          .then((json) => {
+            if(json.success == 1){
+              Alert.alert('Hủy phòng thành công!')
+            }
+          })
+          .catch((err) => console.error(err));
+  }
   return (
     <View style={styles.content}>
       <Text style={styles.title}>Phòng {nameRoom}</Text>
@@ -40,6 +65,11 @@ function AdminDetail({route}) {
             value={totalMoney}
           />
       </View>
+      <View style={styles.btnCheckout}>
+          <TouchableOpacity>
+            <Button title="Hủy phòng"  onPress={() => {unbookRoom()}}  />
+          </TouchableOpacity>
+        </View>
     </View>
   );
 }
@@ -81,6 +111,11 @@ const styles = StyleSheet.create({
     color:"#fff",
     marginTop: 30,
   },
+  btnCheckout: {
+    width: 150,
+    marginTop:30,
+    marginLeft: 160,
+},
   
 });
 export default AdminDetail;

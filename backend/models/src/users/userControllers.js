@@ -14,7 +14,8 @@ router.post("/users", async (req, res, next) => {
     let validator = await registerValidator(req);
     if (validator !== null) {
       return res.send({success: "2" , message: validator});
-    } else {
+    } 
+    else {
       let registed = await register(req.body);
       if (registed == true) {
         return res.send({ success: "1" , message: "Register successfully."});
@@ -38,9 +39,10 @@ router.post("/login", async (req, res, next) => {
     if (validator !== null) {
       return res.send({success: "0", message: validator});
     }
-    let checkRole = req.session.user.role;
-    console.log(checkRole);
+    
     let signIned = await signIn(req)
+
+    let checkRole = req.session.user.role;
     if (signIned === true && checkRole == "admin") {
       return res.send({role: "admin",  message: "Sign In successfully."});
     }

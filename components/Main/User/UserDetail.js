@@ -2,7 +2,8 @@ import React, {useState, useEffect} from 'react';
 import {  View,  Text, Button, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 
 
-let url = 'http://192.168.0.4:8797/update/';
+let url = 'http://192.168.0.5:8797/rooms/update/';
+// let url = 'http://192.168.43.232:8797/rooms/update/';
 
 function UserDetail({route, navigation}){
     const [nameCustomer, txtName] = useState('');
@@ -11,7 +12,7 @@ function UserDetail({route, navigation}){
     const [totalMoney, txtTotal] = useState('');
     const {nameRoom} = route.params;
     let data = {
-      nameCustomer: nameCustomer,
+      nameCustomer: nameCustomer,  
       phoneCustomer: phoneCustomer,
       timeRental: timeRental,
     }
@@ -26,13 +27,16 @@ function UserDetail({route, navigation}){
             body: JSON.stringify(data)
         })
         .then(res => res.json())
-        .then((json) => {
+        .then((json) => {         
           if(json.success == 1){
-            txtTotal({totalMoney: json.data.totalMoney})
-            Alert.alert('Đặt phòng thành công!')
+            txtTotal(json.data.totalMoney.toString())
+            Alert.alert("Đặt phòng thành công!")
+          }
+          else{
+            Alert.alert(json.message)
           }
         })
-        .catch((err) => console.error(err));
+        .catch((err) => console.error(err))
     }
     return (
       <View style={styles.content}>
@@ -52,7 +56,7 @@ function UserDetail({route, navigation}){
             />
         </View>
         <View style={styles.abc}>
-            <Text style={styles.titleInput}> Thời gian thuê </Text>
+            <Text style={styles.titleInput}> Thời gian thuê (giờ)</Text>
             <TextInput style={styles.textInput}          
               onChangeText={text => txtTime(text)}
               value={timeRental}
@@ -64,10 +68,10 @@ function UserDetail({route, navigation}){
           </TouchableOpacity>
         </View>
         <View style={styles.abc}>
-            <Text style={styles.titleInput}> Tổng tiền </Text>
+            <Text style={styles.titleInput}> Tổng tiền (VNĐ) </Text>
             <TextInput style={styles.textInput}          
               onChangeText={text => txtTotal(text)}
-              value={totalMoney}
+              value={totalMoney.toString()}
             />
         </View>
       </View>

@@ -5,6 +5,7 @@ let {
     updateRoom,
     resetRoom,
 } = require("./roomServices");
+const {roomValidator} = require("./roomValidator")
 
 router.get("/:nameRoom", async (req, res, next) => {
     try {
@@ -31,14 +32,20 @@ router.put("/update/:nameRoom", async (req, res, next) => {
       let statesROOM = "Booked"
   
       let result = await updateRoom(nameRoom,statesROOM, nameCUSTOMER, phoneCUSTOMER, timeRENTAL,totalMONEY);
-      if (result === null) {
-        return res.status(404).send({message: "Not found Room"});
+      let validator = await roomValidator(req);
+      if (validator !== null) {
+        return res.send({success: "2" , message: validator});
       }
-      return res.send({
-        success: "1",
-        message: "Update successfully.",
-        data: result
-      });
+      else{
+        if (result === null) {
+          return res.status(404).send({message: "Not found Room"});
+        }
+        return res.send({
+          success: "1",
+          message: "Update successfully.",
+          data: result
+        });
+      }   
     } catch (error) {
       console.error(error);
       return res.status(500).send({error: "Server Error"});
@@ -53,6 +60,7 @@ router.put("/reset/:nameRoom", async (req, res, next) => {
         return res.status(404).send({message: "Not found Post"});
       }
       return res.send({
+        success : "1",
         message: "Reset successfully.",
         data: result
       });

@@ -2,7 +2,8 @@ import React, {useState, useEffect} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 
-let url = "http://192.168.0.4:8797/rooms/"
+let url = "http://192.168.0.5:8797/rooms/"
+// let url = "http://192.168.43.232:8797/rooms/"
 
 const Room = (props) => {
   const [background, setBackground] = useState('dodgerblue');
