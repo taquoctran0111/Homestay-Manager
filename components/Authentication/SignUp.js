@@ -2,7 +2,7 @@ import React, { useState,Component } from 'react';
 import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 
-let url = "http://192.168.0.5:8797/users"
+let url = "http://localhost:8797/users"
 // let url = 'http://192.168.43.232:8797/users';
 
 const SignUpScreen = (props) => {
@@ -39,6 +39,7 @@ const SignUpScreen = (props) => {
             }
             else{
                 Alert.alert("Email đã được sử dụng!")
+                setEmail('')
             }
         }) 
     }

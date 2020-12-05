@@ -1,7 +1,7 @@
 import React from 'react';
 import {  View,  Text, Button, TextInput, StyleSheet,TouchableOpacity, Alert } from 'react-native';
 
-let url = 'http://192.168.0.5:8797/rooms/reset/';
+let url = 'http://localhost:8797/rooms/reset/';
 // let url = 'http://192.168.43.232:8797/rooms/reset/'
 
 function AdminDetail({route}) {
