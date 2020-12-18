@@ -1,8 +1,8 @@
 import React, { useState,Component } from 'react';
-import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 
-let url = "http://localhost:8797/users"
+let url = "http://192.168.43.232:8797/users"
 // let url = 'http://192.168.43.232:8797/users';
 
 const SignUpScreen = (props) => {
@@ -12,7 +12,7 @@ const SignUpScreen = (props) => {
     const [email, setEmail] = useState('');
     const [password_confirmation, setpassword_confirmation] = useState('');
 
-    const { inputStyle, bigButton, buttonText, row1, titleStyle, container } = styles;
+    const { inputStyle, bigButton, buttonText, row1, titleStyle, container, image, row2 } = styles;
     const handlingSignup = () => {
         fetch(url,
         {   
@@ -45,67 +45,74 @@ const SignUpScreen = (props) => {
     }
     return (
         <View style={container}>
-            <View style={row1}>
-                <Text style={titleStyle}>ĐĂNG KÝ</Text>
-            </View>
-            <TextInput 
-                style={inputStyle} 
-                placeholder="Tên người dùng" 
-                value={username}
-                onChangeText={(text) => setUsername(text)}
-            />
-            <TextInput 
-                style={inputStyle} 
-                placeholder="Email" 
-                value={email.toString()}
-                onChangeText={(text) => setEmail(text)}
-            />
-            <TextInput 
-                style={inputStyle} 
-                placeholder="Mật khẩu" 
-                value={password}
-                secureTextEntry
-                onChangeText={(text) => setPassword(text)}
-            />
-            <TextInput 
-                style={inputStyle} 
-                placeholder="Nhập lại mật khẩu" 
-                value={password_confirmation}
-                secureTextEntry
-                onChangeText={(text) => setpassword_confirmation(text)}
-            />
-            <TouchableOpacity style={bigButton} onPress={() => handlingSignup()}>
-                <Text style={buttonText}>ĐĂNG KÝ</Text>
-            </TouchableOpacity>
+            <ImageBackground source={require("../../images/bgSignUp.jpg")} style={image}>
+                <View style={row1}>
+                    <Text style={titleStyle}>ĐĂNG KÝ</Text>
+                </View>
+                <View  style={row2}>
+                    <TextInput 
+                        style={inputStyle} 
+                        placeholder="Tên người dùng" 
+                        value={username}
+                        onChangeText={(text) => setUsername(text)}
+                    />
+                    <TextInput 
+                        style={inputStyle} 
+                        placeholder="Email" 
+                        value={email.toString()}
+                        onChangeText={(text) => setEmail(text)}
+                    />
+                    <TextInput 
+                        style={inputStyle} 
+                        placeholder="Mật khẩu" 
+                        value={password}
+                        secureTextEntry
+                        onChangeText={(text) => setPassword(text)}
+                    />
+                    <TextInput 
+                        style={inputStyle} 
+                        placeholder="Nhập lại mật khẩu" 
+                        value={password_confirmation}
+                        secureTextEntry
+                        onChangeText={(text) => setpassword_confirmation(text)}
+                    />
+                    <TouchableOpacity style={bigButton} onPress={() => handlingSignup()}>
+                        <Text style={buttonText}>ĐĂNG KÝ</Text>
+                    </TouchableOpacity>
+                </View>
+                
+            </ImageBackground>
         </View>
     );
 }
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#3EBA77',
-        padding: 20,
-        alignItems: 'center',
         justifyContent: 'center',
+    },
+    image: {
+        flex: 1,
+        resizeMode: "cover",
+        alignItems: "center",
     },
     inputStyle: {
         height: 50,
-        width: 300,
+        width: 250,
         backgroundColor: '#fff',
         marginBottom: 10,
         borderRadius: 20,
         paddingLeft: 30
     },
-    row1: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-    titleStyle: { color: '#FFF', fontSize: 30 , marginBottom: 50},
+    row1: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',marginTop: 100, },
+    row2: {marginTop: 100,},
+    titleStyle: { color: '#A9A9A9', fontSize: 20 , marginBottom: 50},
     bigButton: {
-        height: 45,
-        width: 300,
-        borderRadius: 20,
-        borderWidth: 1,
-        borderColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center', 
+        width: 250,
+        height: 50,
+        backgroundColor: "#708090",
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 25, 
     },
     buttonText: {
         color: '#fff',

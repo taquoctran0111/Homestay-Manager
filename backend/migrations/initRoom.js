@@ -12,6 +12,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      imageRoom: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       states: {
         type: Sequelize.ENUM("unBooked", "Booked"),
         allowNull: false,

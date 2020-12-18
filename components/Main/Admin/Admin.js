@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 
-let url = "http://localhost:8797/rooms/"
+let url = "http://192.168.43.232:8797/rooms/"
 // let url = "http://192.168.43.232:8797/rooms/"
 
 const Room = (props) => {
@@ -61,29 +61,11 @@ const Admin = () => {
            <Room nameRoom = "101"/>
            <Room nameRoom = "102"/>
            <Room nameRoom = "103"/>
-           <Room nameRoom = "104"/>
-           <Room nameRoom = "105"/>
        </View>
        <View style = {floor} >
            <Room nameRoom = "201"/>
            <Room nameRoom = "202"/>
            <Room nameRoom = "203"/>
-           <Room nameRoom = "204"/>
-           <Room nameRoom = "205"/>
-       </View>
-       <View style = {floor} >
-           <Room nameRoom = "301"/>
-           <Room nameRoom = "302"/>
-           <Room nameRoom = "303"/>
-           <Room nameRoom = "304"/>
-           <Room nameRoom = "305"/>
-       </View>
-       <View style = {floor} >
-           <Room nameRoom = "401"/>
-           <Room nameRoom = "402"/>
-           <Room nameRoom = "403"/>
-           <Room nameRoom = "404"/>
-           <Room nameRoom = "405"/>
        </View>
        <View style = {{marginTop: 50,}}>
          <View style={note}>
@@ -121,6 +103,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     color: '#fff',
     marginBottom: 30,
+    marginTop: 100,
   },
   name: {
     color: "white",

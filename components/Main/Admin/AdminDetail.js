@@ -1,7 +1,8 @@
 import React from 'react';
 import {  View,  Text, Button, TextInput, StyleSheet,TouchableOpacity, Alert } from 'react-native';
 
-let url = 'http://localhost:8797/rooms/reset/';
+let url = 'http://192.168.43.232:8797/rooms/reset/';
+let urledit = 'http://192.168.43.232:8797/rooms/update/';
 // let url = 'http://192.168.43.232:8797/rooms/reset/'
 
 function AdminDetail({route}) {
@@ -33,6 +34,28 @@ function AdminDetail({route}) {
           })
           .catch((err) => console.error(err));
   }
+  const editInfo = () => {
+    fetch(urledit + nameRoom.toString(),
+    {   
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then((json) => {         
+      if(json.success == 1){
+        txtTotal(json.data.totalMoney.toString())
+        Alert.alert("Sửa thông tin thành công!")
+      }
+      else{
+        Alert.alert(json.message)
+      }
+    })
+    .catch((err) => console.error(err))
+  }
   return (
     <View style={styles.content}>
       <Text style={styles.title}>Phòng {nameRoom}</Text>
@@ -60,14 +83,14 @@ function AdminDetail({route}) {
       </View>
       <View style={styles.abc}>
           <Text style={styles.titleInput}> Tổng tiền </Text>
-          <TextInput style={styles.textInput}          
-            onChangeText={text => txtTotal(text)}
-            value={totalMoney}
-          />
+          <Text style={styles.textInput}>{totalMoney}</Text>
       </View>
       <View style={styles.btnCheckout}>
           <TouchableOpacity>
             <Button title="Hủy phòng"  onPress={() => {unbookRoom()}}  />
+          </TouchableOpacity>
+          <TouchableOpacity style = {styles.btn}>
+            <Button title="Sửa thông tin"  onPress={() => {editInfo()}}  />
           </TouchableOpacity>
         </View>
     </View>
@@ -84,6 +107,7 @@ const styles = StyleSheet.create({
   title: {
     color: "#fff",
     fontSize: 20,
+    marginTop: 50,
   },
   title1: {
     color: "red",
@@ -116,6 +140,10 @@ const styles = StyleSheet.create({
     marginTop:30,
     marginLeft: 160,
 },
+btn: {
+  marginTop: 15,
+},
+
   
 });
 export default AdminDetail;

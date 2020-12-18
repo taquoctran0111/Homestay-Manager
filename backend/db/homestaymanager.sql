@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 25, 2020 lúc 06:35 PM
+-- Thời gian đã tạo: Th12 15, 2020 lúc 09:40 AM
 -- Phiên bản máy phục vụ: 10.4.13-MariaDB
 -- Phiên bản PHP: 7.4.11
 
@@ -24,6 +24,37 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `rooms`
+--
+
+CREATE TABLE `rooms` (
+  `id` int(11) NOT NULL,
+  `nameRoom` int(11) NOT NULL,
+  `imageRoom` varchar(255) NOT NULL,
+  `states` enum('unBooked','Booked') NOT NULL,
+  `nameCustomer` varchar(255) DEFAULT NULL,
+  `phoneCustomer` int(11) DEFAULT NULL,
+  `timeRental` int(11) DEFAULT NULL,
+  `totalMoney` int(11) DEFAULT NULL,
+  `created_at` datetime(3) DEFAULT current_timestamp(3),
+  `updated_at` datetime(3) DEFAULT current_timestamp(3) ON UPDATE current_timestamp(3)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Đang đổ dữ liệu cho bảng `rooms`
+--
+
+INSERT INTO `rooms` (`id`, `nameRoom`, `imageRoom`, `states`, `nameCustomer`, `phoneCustomer`, `timeRental`, `totalMoney`, `created_at`, `updated_at`) VALUES
+(1, 101, 'https://i.pinimg.com/564x/dc/e1/b4/dce1b4f7e58b78ce8ddd967e7e1f7c4c.jpg', 'Booked', 'Tạ Quốc Trần', 329051143, 12, 1200000, '2020-12-10 09:14:05.487', '2020-12-10 13:26:15.917'),
+(2, 102, 'https://i.pinimg.com/236x/7d/90/69/7d90695ca493a0a2e00b3e97db0e01c4.jpg', 'unBooked', NULL, NULL, NULL, NULL, '2020-12-10 09:14:10.250', '2020-12-10 09:20:06.069'),
+(3, 103, 'https://i.pinimg.com/236x/64/81/99/6481993f2ffe61c8132ae8f46a3f6a44.jpg', 'unBooked', NULL, NULL, NULL, NULL, '2020-12-10 09:14:11.183', '2020-12-10 09:20:09.585'),
+(4, 201, 'https://i.pinimg.com/236x/78/af/38/78af3871d9cce05211b77900116398f4.jpg', 'unBooked', NULL, NULL, NULL, NULL, '2020-12-10 09:14:11.833', '2020-12-10 09:20:12.446'),
+(5, 202, 'https://i.pinimg.com/236x/1c/ac/07/1cac07e3fdaf10358d6441a7237ba190.jpg', 'unBooked', NULL, NULL, NULL, NULL, '2020-12-10 09:14:12.468', '2020-12-10 09:20:15.071'),
+(6, 203, 'https://i.pinimg.com/236x/12/d0/8e/12d08ef2f9c2d4440648f10656cf20cf.jpg', 'unBooked', NULL, NULL, NULL, NULL, '2020-12-10 09:14:14.578', '2020-12-10 09:20:19.350');
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `sequelizemeta`
 --
 
@@ -36,6 +67,7 @@ CREATE TABLE `sequelizemeta` (
 --
 
 INSERT INTO `sequelizemeta` (`name`) VALUES
+('initRoom.js'),
 ('initUser.js');
 
 -- --------------------------------------------------------
@@ -55,8 +87,9 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`session_id`, `expires`, `data`) VALUES
-('CKOUXsJAhOTw4Cgb8eK2zOT5PAZ7WhZ6', 1606362501, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"user\":{\"id\":2,\"email\":\"tqt@gmail.com\",\"username\":\"congacon\",\"password\":\"$2b$10$ivb63YuNXrjs7NzVmsw4x.MSzwfKFM8k/qjuWd01fkt8K8/Oyv.nC\",\"role\":\"customer\",\"created_at\":\"2020-11-25T03:25:53.000Z\",\"updated_at\":\"2020-11-25T03:25:53.000Z\"}}'),
-('l1rGltawWLHAiMch0-DSvWdoznYm5-iS', 1606383528, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"user\":{\"id\":2,\"email\":\"tqt@gmail.com\",\"username\":\"congacon\",\"password\":\"$2b$10$ivb63YuNXrjs7NzVmsw4x.MSzwfKFM8k/qjuWd01fkt8K8/Oyv.nC\",\"role\":\"customer\",\"created_at\":\"2020-11-25T03:25:53.000Z\",\"updated_at\":\"2020-11-25T03:25:53.000Z\"}}');
+('IQCD5x5xtH3mhPfoQrANMT1yqnUNFqyZ', 1607659447, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"user\":{\"id\":2,\"email\":\"taquoctrantb2000@gmail.com\",\"username\":\"Tạ Quốc Trần \",\"password\":\"$2b$10$vJmtqkg6v/HEOT/kOtj/m.yvFRs9quqgw8SSWeXt1DwL8a5nLFU7S\",\"role\":\"customer\",\"created_at\":\"2020-12-10T03:33:09.000Z\",\"updated_at\":\"2020-12-10T03:33:09.000Z\"}}'),
+('KOlCuTgOivN6S-jpiplOcPMp92dy2WzO', 1607668003, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"user\":{\"id\":2,\"email\":\"taquoctrantb2000@gmail.com\",\"username\":\"Tạ Quốc Trần \",\"password\":\"$2b$10$vJmtqkg6v/HEOT/kOtj/m.yvFRs9quqgw8SSWeXt1DwL8a5nLFU7S\",\"role\":\"customer\",\"created_at\":\"2020-12-10T03:33:09.000Z\",\"updated_at\":\"2020-12-10T03:33:09.000Z\"}}'),
+('llrGlxFz1i3KpcGPkUYmcyzyJPJ3OEOG', 1607779308, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"user\":{\"id\":2,\"email\":\"taquoctrantb2000@gmail.com\",\"username\":\"Tạ Quốc Trần \",\"password\":\"$2b$10$vJmtqkg6v/HEOT/kOtj/m.yvFRs9quqgw8SSWeXt1DwL8a5nLFU7S\",\"role\":\"customer\",\"created_at\":\"2020-12-10T03:33:09.000Z\",\"updated_at\":\"2020-12-10T03:33:09.000Z\"}}');
 
 -- --------------------------------------------------------
 
@@ -79,23 +112,19 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `username`, `role`, `password`, `created_at`, `updated_at`) VALUES
-(1, 'tqt1@gmail.com', 'ta quoc tran', 'customer', '123456', '2020-11-24 21:51:50.219', '2020-11-24 21:51:50.219'),
-(2, 'tqt@gmail.com', 'congacon', 'customer', '$2b$10$ivb63YuNXrjs7NzVmsw4x.MSzwfKFM8k/qjuWd01fkt8K8/Oyv.nC', '2020-11-25 03:25:53.000', '2020-11-25 03:25:53.000'),
-(3, 'aabb@gmail.com', 'chimcon', 'customer', '$2b$10$US83qtVWOFGF6tO29RW84.ee5T2zWOqq1zh/5vEaa5SI4f/gaFBEa', '2020-11-25 03:29:24.000', '2020-11-25 03:29:24.000'),
-(4, 'aabbcc@gmail.com', 'chimcon', 'customer', '$2b$10$zxALA3fGw7.39ZdfJZkwH.MC4mBycFPSEYkzPIQpBw0p4RbyTyc3C', '2020-11-25 03:31:49.000', '2020-11-25 03:31:49.000'),
-(5, 'aabbcccc@gmail.com', 'chimcon', 'customer', '$2b$10$cPaPbPxpUuki2BpIwbDfUuac6k87tcACLwKu4IMyV7JYjVAu77H1.', '2020-11-25 09:35:02.000', '2020-11-25 09:35:02.000'),
-(6, 'aabbccc1c@gmail.com', 'chimconva', 'customer', '$2b$10$Uf5XeWojW6omVDKmMflbJuUQEDqNHof0iqtXS1c/eufrp5yuxcvzy', '2020-11-25 09:38:09.000', '2020-11-25 09:38:09.000'),
-(7, 'vccv@gmail.com', 'chimconva', 'customer', '$2b$10$yRpGdxM/TMexuk07O8pj.eLsAXgFFaMMVToAmsqTRP4xoCaC7YF2i', '2020-11-25 09:38:48.000', '2020-11-25 09:38:48.000'),
-(8, 'vccvcc@gmail.com', 'chimconva', 'customer', '$2b$10$NN7wkzg2PPTcY0pu.O0j8ewUsUNI.Un878EGRabVDCktydCYjadDa', '2020-11-25 10:50:23.000', '2020-11-25 10:50:23.000'),
-(9, 'vvvv@gmail.com', 'chimconva', 'customer', '$2b$10$0xeGrcWRxgrmp61Bg/ocpeWcAxRFwTPDC8JadctiAwNg3HqhfBStq', '2020-11-25 10:55:35.000', '2020-11-25 10:55:35.000'),
-(10, 'vvvvv@gmail.com', 'chimconva', 'customer', '$2b$10$FNW6xzvfGvMZ21tklm0aFOBbQJPpKoy6aEZpoBHN1BijaJXnVVguW', '2020-11-25 11:22:12.000', '2020-11-25 11:22:12.000'),
-(11, 'vvttvvv@gmail.com', 'chimconva', 'customer', '$2b$10$CH053kM2AecpnGP5200XCedZ5ZgAM/N7rCsDAxcGtuwiCsZ7wZEtC', '2020-11-25 14:55:42.000', '2020-11-25 14:55:42.000'),
-(12, 'vvttvvvvv@gmail.com', 'Tạ Quốc Trần', 'customer', '$2b$10$iYcl3jJxSKzcrrdIqOOElOzNaPF7wIntJ8/xt1ERjwC5Vy.vkXnFi', '2020-11-25 15:15:45.000', '2020-11-25 15:15:45.000'),
-(13, 'vvtt@gmail.com', 'Tạ Quốc Trần', 'customer', '$2b$10$tGRXoF0o699ePZlI29.47ubLzaac6hLeIN3zGNcLXirwoISAEyCay', '2020-11-25 17:00:48.000', '2020-11-25 17:00:48.000');
+(1, 'admin@admin.com', 'Admin', 'admin', '$2b$10$T0gb/J1JeOvBZM8eNiHomO/0jANNVEt1Z/fX/yw5I9avyBB8rpqjK', '2020-12-10 03:31:57.000', '2020-12-10 03:31:57.000'),
+(2, 'taquoctrantb2000@gmail.com', 'Tạ Quốc Trần ', 'customer', '$2b$10$vJmtqkg6v/HEOT/kOtj/m.yvFRs9quqgw8SSWeXt1DwL8a5nLFU7S', '2020-12-10 03:33:09.000', '2020-12-10 03:33:09.000');
 
 --
 -- Chỉ mục cho các bảng đã đổ
 --
+
+--
+-- Chỉ mục cho bảng `rooms`
+--
+ALTER TABLE `rooms`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `rooms_id` (`id`);
 
 --
 -- Chỉ mục cho bảng `sequelizemeta`
@@ -122,10 +151,16 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT cho bảng `rooms`
+--
+ALTER TABLE `rooms`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -10,7 +10,8 @@ let raiseErr = async (req) => {
   
   let roomValidator = async (req) => {
     req.check('nameCustomer', 'Yêu cầu nhập tên!').not().isEmpty();
-    req.check('phoneCustomer', 'Yêu cầu nhập số điện thoại!').not().isEmpty();
+    req.check('phoneCustomer', 'Số điện thoại không hợp lệ!').isNumeric();
+    req.check('phoneCustomer', 'Yêu cầu nhập số điện thoại!').not().isEmpty();   
     req.check('timeRental', 'Yêu cầu nhập thời gian thuê!').not().isEmpty();
     req.check('timeRental', 'Thời gian thuê phải là sô!').isNumeric();
   

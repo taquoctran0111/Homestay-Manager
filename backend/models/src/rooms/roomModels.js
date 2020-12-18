@@ -13,6 +13,7 @@ let Room = sequelize.define("rooms", {
   phoneCustomer: Sequelize.INTEGER,
   timeRental: Sequelize.INTEGER,
   totalMoney: Sequelize.INTEGER,
+  imageRoom: Sequelize.STRING,
 }, {
   tableName: "rooms",
   createdAt: "created_at",

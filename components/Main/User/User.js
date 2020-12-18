@@ -1,172 +1,135 @@
 import React, {useState, useEffect} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, RefreshControl } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, RefreshControl, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 import { ScrollView } from 'react-native-gesture-handler';
 
-const wait = (timeout) => {
-  return new Promise(resolve => {
-    setTimeout(resolve, timeout);
-  });
-}
 
-let url = "http://localhost:8797/rooms/"
-// let url = "http://192.168.0.5:8797/rooms/"
-// let url = 'http://192.168.43.232:8797/rooms/';
-
+let url = "http://192.168.43.232:8797/rooms/"
 const Room = (props) => {
-  const [background, setBackground] = useState('dodgerblue'); 
-  const [data, setData] = useState({})
-  const [isLoading, setLoading] = useState(true);
-  const navigation = useNavigation();
-
-  useEffect((background) => {
-    fetch(url + props.nameRoom.toString())
-    .then((response) => response.json())
-    .then((json) => setData(json.result.room))
-    .catch((error) => console.error(error))
-    .finally(() => setLoading(false));
-    if(data.states == "Booked")
-    {
-      background = 'red'; 
-      setBackground(background)
+    const navigation = useNavigation();
+    const [background, setBackground] = useState('dodgerblue'); 
+    const [state, setState] = useState('Chưa đặt');
+    const [data, setData] = useState({})
+    const [isLoading, setLoading] = useState(true);
+    useEffect((background) => {
+        fetch(url + props.nameRoom.toString())
+        .then((response) => response.json())
+        .then((json) => setData(json.result.room))
+        .catch((error) => console.error(error))
+        .finally(() => setLoading(false));
+        if(data.states == "Booked")
+        {
+            background = 'red'; 
+            setBackground(background)
+            setState('Đã đặt')
+        }
+    }, [isLoading]);
+    const gotoDetail = () => {
+        if(data.states.toString() == "Booked"){
+            navigation.navigate('InfoUser' , {
+                nameRoom: props.nameRoom,
+                nameCustomerPR: data.nameCustomer,
+                phoneCustomerPR: data.phoneCustomer.toString(), 
+                timeRentalPR: data.timeRental.toString(),
+                totalMoneyPR: data.totalMoney.toString(),
+                statesPR: data.states.toString(),
+            })
+        }
+        else{
+            navigation.navigate('UserDetail', {nameRoom: props.nameRoom})
+             
+        }  
     }
-  }, [isLoading]);
-  const _onPress = () => {
-    if(data.states.toString() == "Booked"){
-      Alert.alert("Phòng đã được đặt!")
+    const stateColor = {
+        width: 15,
+        height: 15,
+        borderRadius: 50,
+        backgroundColor: background,
+        marginTop: 2,
     }
-    else{
-      navigation.navigate('UserDetail', {nameRoom: props.nameRoom,})
-    }    
-  }
-  const bg = {
-      backgroundColor: background, padding: 10, width: 50, height: 40, alignItems: "center", borderRadius: 5, marginRight: 10, marginTop: 5
-  }
-  const name = { color: "white",}
-  return(
-    <View>
-      <TouchableOpacity style={bg} onPress = {() => { _onPress()}}>
-        <Text style={name}>{props.nameRoom}</Text>
-      </TouchableOpacity>
-    </View>
-  );
+    return(
+        <View style = {styles.container}>
+                <TouchableOpacity style = {styles.viewRoom} onPress = {() => { gotoDetail()}}>
+                    <Image
+                        style = {styles.image}
+                        source = {{uri: data.imageRoom}}
+                    />
+                    <View style = {styles.bottom}>
+                        <Text style = {styles.nameRoom}>Phòng: {props.nameRoom}</Text>
+                        <Text style = {styles.state}>Trạng thái: {state}</Text>
+                        <View style = {stateColor}></View>
+                    </View>
+                </TouchableOpacity>
+        </View>
+    );
 }
-const User = () => {
-  const [refreshing, setRefreshing] = React.useState(false);
-
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    wait(2000).then(() => setRefreshing(false));
-  }, []);
-  const {content, title, floor, room, name, note, txtNote, bookedRoom} = styles; 
-  return(
-  <ScrollView  contentContainerStyle={styles.scrollView} refreshControl= {<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>} >
-    <View style = {content} >
-       <Text style = {title} >Danh sách phòng</Text>
-       <View style = {floor} >
-           <Room nameRoom = "101"/>
-           <Room nameRoom = "102"/>
-           <Room nameRoom = "103"/>
-           <Room nameRoom = "104"/>
-           <Room nameRoom = "105"/>
-       </View>
-       <View style = {floor} >
-           <Room nameRoom = "201"/>
-           <Room nameRoom = "202"/>
-           <Room nameRoom = "203"/>
-           <Room nameRoom = "204"/>
-           <Room nameRoom = "205"/>
-       </View>
-       <View style = {floor} >
-           <Room nameRoom = "301"/>
-           <Room nameRoom = "302"/>
-           <Room nameRoom = "303"/>
-           <Room nameRoom = "304"/>
-           <Room nameRoom = "305"/>
-       </View>
-       <View style = {floor} >
-           <Room nameRoom = "401"/>
-           <Room nameRoom = "402"/>
-           <Room nameRoom = "403"/>
-           <Room nameRoom = "404"/>
-           <Room nameRoom = "405"/>
-       </View>
-       <View style = {{marginTop: 50,}}>
-         <View style={note}>
-             <View>
-               <TouchableOpacity style={room}>
-                 <Text style={name}></Text> 
-               </TouchableOpacity>
-             </View>
-             <Text style={txtNote}>Chưa có người đặt</Text>
-         </View>
-         <View style={note}>
-             <View style={bookedRoom}>
-               <TouchableOpacity>
-                 <Text style={name}></Text>
-               </TouchableOpacity>
-             </View>
-             <Text style={txtNote}>Đã có người đặt</Text>
-         </View>
-       </View>
-     </View>
-  </ScrollView>
-  );
+const User2 = () => {
+    return(
+        <ScrollView contentContainerStyle={styles.scrollView}>
+            <Text style = {styles.title}> Danh sách phòng </Text>
+            <View style = {styles.container}>
+                <Room nameRoom = "101"/>
+            </View>
+            <View style = {styles.container}>
+                <Room nameRoom = "102"/>
+            </View>
+            <View style = {styles.container}>
+                <Room nameRoom = "103"/>    
+            </View>
+            <View style = {styles.container}>
+                <Room nameRoom = "201"/>
+            </View>
+            <View style = {styles.container}>
+                <Room nameRoom = "202"/>
+            </View>
+            <View style = {styles.container}>
+                <Room nameRoom = "203"/>
+            </View>
+        </ScrollView>
+    );
 }
 const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: '#3EBA77',
-  },
-  floor: {
-    flexDirection: "row",
-    display: "flex",
-    justifyContent: "center"
-  },
-  title: {
-    fontSize: 25,
-    color: '#fff',
-    marginBottom: 30,
-  },
-  name: {
-    color: "white",
-  },
-  note: {
-    flexDirection: "row",
-    marginLeft: 20,
-    alignItems: "center",
-  },
-  txtNote: { 
-    color: '#fff',
-    marginLeft: 10,
-  },
-  room: {
-    backgroundColor: 'dodgerblue',
-    padding: 10,
-    width: 50,
-    height: 40,
-    alignItems: "center",
-    borderRadius: 5,
-    marginRight: 10,
-    marginTop: 5,
-  },
-  bookedRoom:{
-    backgroundColor: "red",
-    padding: 10,
-    width: 50,
-    height: 40,
-    alignItems: "center",
-    borderRadius: 5,
-    marginRight: 10,
-    marginTop: 5,
-  },
-  scrollView: {
-    flex: 1,
-    backgroundColor: '#3EBA77',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    scrollView: {
+        backgroundColor: '#888888',
+        alignItems: 'center',
+    },
+    container: {
+        flex: 1,
+        backgroundColor: "#888888",
+    },
+    title: {
+        marginTop: 50,
+        fontSize: 20,
+        marginBottom: 20,
+        color: "lightgray"
+    },
+    viewRoom: {
+        borderWidth: 1,
+        borderColor: "#fff",
+        padding: 5,
+        // marginTop: 100,
+        marginBottom: 10,
+        borderRadius: 20,
+    },
+    image: {
+        width: 320,
+        height: 170,
+        borderRadius: 20,
+    },
+    bottom: {
+        marginTop: 10,
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+    nameRoom: {
+        color: "lightgray",
+        marginLeft: 10,
+    },
+    state: {
+        color: "lightgray",
+        marginRight: -80,
 
-export default User;
+    },
+    
+})
+export default User2
